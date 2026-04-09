@@ -1,13 +1,19 @@
 # Support functions for QML Workshop
 # Author: Jacob Cybulski, ironfrown[at]gmail.com
 # Date: September 2024
-# Updated: March 2025
+# Updated: April 2026
 
 # Tested with:
-# PennyLane                 0.40.0
-# PennyLane_Lightning       0.40.0
-# PennyLane_Lightning_GPU   0.40.0
+#   PennyLane                 0.40.0
+#   PennyLane_Lightning       0.40.0
+#   PennyLane_Lightning_GPU   0.40.0
 
+# Now also compatible with...
+#   pennylane                 0.44.1
+#   pennylane_lightning       0.44.0
+#   torch                     2.11.0+cpu
+#   torchaudio                2.11.0
+#   torchvision               0.26.0+cpu
 
 import pylab
 import os
@@ -55,7 +61,14 @@ def plot_hist(probs, scale=None, figsize=(8, 6), dpi=72, th=-10000, xlim=None, y
     # Prepare data
     n_probs = len(probs)
     n_digits = len(bin_int_to_list(n_probs, 1)) # 1 means as many digits as required
-    if labels is None: labels = [f'{n:0{n_digits}b}' for n in np.arange(n_probs)]
+    if labels is None: 
+        labels = [f'{n:0{n_digits}b}'[1:] for n in np.arange(n_probs)]
+        if len(labels) > 4:
+            default_rot = 60
+        else:
+            default_rot = 0
+    else:
+        default_rot = 0
 
     # Filter out the prob values below threshold
     pairs = [(p, l) for (p, l) in zip(probs, labels) if p >= th]
@@ -71,7 +84,7 @@ def plot_hist(probs, scale=None, figsize=(8, 6), dpi=72, th=-10000, xlim=None, y
     if ylim is not None: plt.ylim(ylim)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
-    plt.xticks(rotation=60)
+    plt.xticks(rotation=default_rot)
     if scale is not None:
         dpi = fig.get_dpi()
         fig.set_dpi(dpi*scale)
@@ -305,7 +318,7 @@ def multi_plot_series(
 #     'default', we can even use 'rcParams' to redefine all attributes
 #   level = None, 'user', 'top', 'device', 'gradient', 0, 1, ...
 def draw_circuit(circuit, fontsize=20, style='pennylane', 
-                 scale=None, title=None, decimals=2, level=None):
+                 scale=None, title=None, decimals=2, level='user'):
     def _draw_circuit(*args, **kwargs):
         nonlocal circuit, fontsize, style, scale, title, level
         qml.drawer.use_style(style)
@@ -317,5 +330,3 @@ def draw_circuit(circuit, fontsize=20, style='pennylane',
             fig.suptitle(title, fontsize=fontsize)
         plt.show()
     return _draw_circuit
-
-
