@@ -35,7 +35,7 @@
 - **Last Update:**
   - _**March, 29 2025:**_ Compatibility updates with recent versions of PennyLane and Torch.
 
-### Important notebooks
+### Important notebooks <font color="red">(Draft)</font>
 
 You can play with these notebooks, enjoy!<br>
 Note however that they may be updated at any time!
@@ -58,7 +58,6 @@ Note however that they may be updated at any time!
 | | requirements.txt | A list of software needed for this workshop (for auto-install with *pip*) |
 
 ### Folders
-- _**data:**_ data files used during the workshop
 - _**notebooks:**_ all workshop notebooks can be found here
 - _**images:**_ some images appearing in notebooks (via a relative link)
 - _**legacy:**_ previous versions of files (in case you really really wanted them)
